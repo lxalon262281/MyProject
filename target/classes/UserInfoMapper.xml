@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ssm.mapper.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="ssm.model.UserInfo">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+    </resultMap>
+    <!--<sql id="Base_Column_List">-->
+        <!--&lt;!&ndash;-->
+          <!--WARNING - @mbg.generated-->
+        <!--&ndash;&gt;-->
+        <!--id, name-->
+    <!--</sql>-->
+    <select id="selectOne" resultType="ssm.model.UserInfo">
+        SELECT * FROM person WHERE id = #{id}
+    </select>
+
+    <select id="selectByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT * FROM person
+        <if test="page.start != null and page.size != null">
+            limit #{page.start},#{page.size}
+        </if>
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT * FROM person
+    </select>
+
+    <select id="selectByMap" parameterType="java.util.Map" resultType="ssm.model.UserInfo">
+        SELECT * FROM person WHERE name LIKE "%${map.name}%"
+    </select>
+
+
+    <select id="selectCustomerCountList" parameterType="java.util.List" resultMap="BaseResultMap">
+        select * from person where id in
+        <foreach item="item" collection="customerIdList" separator="," open="(" close=")" index="">
+            #{item, jdbcType=INTEGER}
+        </foreach>
+    </select>
+
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="false" keyProperty="id">
+    <!--<insert id="batchInsert" parameterType="List">-->
+        INSERT INTO person
+        (id,name,age,address)
+        VALUES
+        <foreach collection ="list" item="sequence" index="index" separator =",">
+            (null,#{sequence.name},#{sequence.age},#{sequence.address})
+        </foreach >
+    </insert>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into person (name,age,address) values (#{name},#{age},#{address})
+    </insert>
+
+    <insert id="insert2" parameterType="ssm.model.UserInfo">
+        <selectKey keyProperty="id" order="AFTER" resultType="Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into person (name,age,address)
+        values (#{user.name},#{user.age},#{user.address})
+    </insert>
+
+</mapper>
