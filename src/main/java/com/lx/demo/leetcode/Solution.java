@@ -76,38 +76,6 @@ public class Solution {
     }
 
     /**
-     * 中心查找法
-     * @param s
-     * @return
-     */
-    public String longestPalindrome2(String s) {
-        if (null == s || s.length() < 1) {
-            return "";
-        }
-        int start = 0, end = 0;
-        int num1, num2, len;
-        for (int i = 0; i < s.length(); i++) {
-            num1 = getMaxLength(s, i, i);
-            num2 = getMaxLength(s, i, i + 1);
-            len = Math.max(num1, num2);
-            if (len > end - start) {
-                start = i - (len - 1) / 2;
-                end = i + len / 2;
-            }
-        }
-        return s.substring(start, end + 1);
-    }
-
-    public int getMaxLength(String s, int left, int right) {
-        int L = left, R = right;
-        while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) {
-            L--;
-            R++;
-        }
-        return R - L - 1;
-    }
-
-    /**
      * 32位带符号整数反转
      * @param x
      * @return

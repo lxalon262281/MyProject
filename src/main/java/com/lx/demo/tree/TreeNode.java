@@ -12,6 +12,7 @@ public class TreeNode {
         this.leftTreeNode = leftTreeNode;
     }
 
+
     public TreeNode getRightTreeNode() {
         return rightTreeNode;
     }
@@ -31,6 +32,10 @@ public class TreeNode {
     public TreeNode(String value) {
         super();
         this.value = value;
+    }
+    public TreeNode() {
+        this.leftTreeNode = null;
+        this.rightTreeNode = null;
     }
 
     @Override

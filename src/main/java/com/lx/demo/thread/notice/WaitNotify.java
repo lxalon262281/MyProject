@@ -12,13 +12,10 @@ public class WaitNotify {
         Thread waitThread = new Thread(new Wait(),"waitThread");
         waitThread.start();
         TimeUnit.SECONDS.sleep(1);
-        Thread notifyThrea = new Thread(new Notify(),"waitThread");
-        notifyThrea.start();
-
+        Thread notifyThread = new Thread(new Notify(),"notifyThread");
+        notifyThread.start();
     }
-
     static class Wait implements Runnable {
-
         @Override
         public void run() {
             synchronized (lock) {
@@ -38,7 +35,6 @@ public class WaitNotify {
     }
 
     static class Notify implements Runnable {
-
         @Override
         public void run() {
             synchronized (lock) {

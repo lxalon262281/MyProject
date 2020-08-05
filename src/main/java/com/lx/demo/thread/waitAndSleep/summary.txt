@@ -1,0 +1,50 @@
+public void mWait() {
+        synchronized (this) {
+            try {
+                System.out.println("Wait: 结束时间："+ System.currentTimeMillis());
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        }
+
+}
+
+以上代码结果梳理一下逻辑：
+首先sleepThread线程会启动起来，然后在run方法里调用Service对象的mSleep方法，到了同步代码块后，this就是Test类里创建的Service对象mService，sleepThread线程获得了Service对象的锁，之后进入了休眠状态，但并没有释放该Service对象的锁。
+这时waitThread线程也启动了起来，调用Service对象的mWait方法，同样到了同步代码块，因为Service对象的锁已经被sleepThread占了，所以waitThread线程只能干等着。
+等到sleepThread线程执行完毕（休眠结束）后释放了同步锁，waitThread线程拿到了同步锁，会继续执行，mWait才会被调用。
+
+
+
+ public void mSleep() {
+        synchronized (this) {
+            try {
+//                System.out.println("Sleep : 当前时间 " + System.currentTimeMillis());
+//                Thread.sleep(3 * 1000);
+                Thread.sleep(3*1000);
+                this.notifyAll();
+                System.out.println(" 唤醒等待 : 结束时间："+System.currentTimeMillis());
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        }
+    }
+
+    public void mWait() {
+        synchronized (this) {
+            try {
+//                System.out.println("Wait: 结束时间："+ System.currentTimeMillis());
+                System.out.println(" 等待开始 : 当前时间："+System.currentTimeMillis());
+                this.wait();
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        }
+
+    }
+
+这里是先让 waitThread线程启动起来，然后waitThread线程进入等待状态，并释放了Service对象的锁，这时sleepThread也启动了，来到了mSleep方法的同步代码块，因为之前的waitThread线程已经释放了Service对象的机锁，sleepThread可以拿到对象锁，
+所以mSleep方法是会被马上调用的。然后sleepThread线程就是进入了睡眠状态，等到3秒休眠结束后调用notifyAll()唤醒了waitThread线程。
+
+综上所诉：
+sleep() 和 wait() 的区别就是 调用sleep方法的线程不会释放对象锁，而调用wait() 方法会释放对象锁

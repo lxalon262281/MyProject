@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 public class MethodClass {
     public static void main(String[] args) throws Exception {
         //1.获取Class对象
-        Class stuClass = Class.forName("com.lx.reflect.field.Student");
+        Class stuClass = Class.forName("com.lx.demo.reflect.field.Student");
         //2.获取所有公有方法
         System.out.println("***************获取所有的”公有“方法*******************");
         stuClass.getMethods();
@@ -13,11 +13,15 @@ public class MethodClass {
         for(Method m : methodArray){
             System.out.println(m);
         }
+
+        System.out.println("");
         System.out.println("***************获取所有的方法，包括私有的*******************");
         methodArray = stuClass.getDeclaredMethods();
         for(Method m : methodArray){
             System.out.println(m);
         }
+
+        System.out.println("");
         System.out.println("***************获取公有的show1()方法*******************");
         Method m = stuClass.getMethod("show1", String.class);
         System.out.println(m);
@@ -25,6 +29,8 @@ public class MethodClass {
         Object obj = stuClass.getConstructor().newInstance();
         m.invoke(obj, "刘德华");
 
+
+        System.out.println("");
         System.out.println("***************获取私有的show4()方法******************");
         m = stuClass.getDeclaredMethod("show4", int.class);
         System.out.println(m);

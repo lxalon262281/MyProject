@@ -8,7 +8,7 @@ public class Station extends Thread {
     }
 
     // 为了保持票数的一致，票数要静态
-    static int tick = 1000;
+    static int tick = 20;
 
     // 创建一个静态钥匙
     static Object ob = "aa";//值是任意的
@@ -48,6 +48,7 @@ public class Station extends Thread {
                             } else {
                                 ob.notify();
                             }
+//
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -82,6 +83,7 @@ public class Station extends Thread {
                             } else {
                                 ob.notify();
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -89,12 +91,6 @@ public class Station extends Thread {
                         System.out.println("票卖完了");
                     }
                 }
-//                try {
-//                    sleep(1000);//休息一秒
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-
             }
         }
     }

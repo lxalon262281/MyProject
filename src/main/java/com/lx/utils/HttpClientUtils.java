@@ -1,11 +1,13 @@
 package com.lx.utils;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -177,7 +179,6 @@ public class HttpClientUtils {
      * 发送put请求；不带请求参数
      *
      * @param url 请求地址
-     * @param params 参数集合
      * @return
      * @throws Exception
      */
@@ -214,7 +215,6 @@ public class HttpClientUtils {
      * 发送delete请求；不带请求参数
      *
      * @param url 请求地址
-     * @param params 参数集合
      * @return
      * @throws Exception
      */
@@ -284,6 +284,7 @@ public class HttpClientUtils {
 
             // 设置到请求的http对象中
             httpMethod.setEntity(new UrlEncodedFormEntity(nvps, ENCODING));
+            httpMethod.setEntity(new StringEntity(JSON.toJSONString(params), ENCODING));
         }
     }
 

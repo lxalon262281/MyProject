@@ -5,20 +5,25 @@ package com.lx.demo.str;
  */
 public class HuiwenDemo {
     public static void main(String[] args) {
-        Integer num = 121;
+        Integer num = 1210;
         Integer temp = num;
         System.out.println(num);
         Integer a,n = 0;
         while (num > 0) {
             a = num % 10;
-            num = num / 10;
             n = n * 10 + a;
+            num = num / 10;
         }
         System.out.println(n);
         checkString("10");
 
     }
 
+    /**
+     * 判断回文串
+     * 思路：先把字符串反转，然后再挨个比较
+     * @param s
+     */
     public static void checkString(String s) {
         int x = 10;
         StringBuffer sb = new StringBuffer(x + "");

@@ -1,14 +1,12 @@
 package com.lx.demo.thread.pool;
 
+import sun.nio.ch.ThreadPool;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.*;
 
 public class ThreadPoolDemo {
-//    public static void main(String[] args) {
-//        executeTask();
-//    }
-
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 //        Callable<String> callable = new Callable<String>() {
 //            @Override
@@ -29,17 +27,17 @@ public class ThreadPoolDemo {
 
             for (int i = 0;i < 60;i++) {
 //            pool.execute(new Thread(){
-//                @Override
-//                public void run() {
-//                    System.out.println(Thread.currentThread().getName());
-//                }
-//            });
-//                pool.execute();
+//                    @Override
+//                    public void run() {
+//                        System.out.println(Thread.currentThread().getName());
+//                    }
+//                });
+
                 Future<Object> result = pool.submit(new TaskDemo());
                 try {
                     Object s = result.get();
                     System.out.println(s);
-                    Thread.sleep(1000);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
                     e.getMessage();
                 } catch (Exception e) {

@@ -1,8 +1,40 @@
 package com.lx.demo.thread;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
+
+/**
+ * 卖票
+ */
+class Station2 implements Runnable {
+    static int tick = 300;
+
+    static Object ob = "aa";//值是任意的
+
+    @Override
+    public void run() {
+        while (tick > 0) {
+            synchronized (ob) {
+                if (tick > 0) {
+                    System.out.println(Thread.currentThread().getName() + ":卖出了第" + tick + "张票");
+                    tick--;
+                    if (tick == 1) {
+                        System.out.println(System.currentTimeMillis());
+                    }
+                } else {
+                    System.out.println("票卖完了");
+                    System.out.println(System.currentTimeMillis());
+                }
+            }
+            try {
+                Thread.sleep(10);//休息一秒
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+}
 public class MainClass {
     /**
      * java多线程同步锁的使用
@@ -16,20 +48,17 @@ public class MainClass {
         // 让每一个站台对象各自开始工作
         station1.start();
         station2.start();
-       // station3.start();
+//        station3.start();
 //        for (int i = 1; i <= 3; i++) {
 //            Station station = new Station("窗口" + i);
 //            station.start();
 //
 //        }
         //test3();
-//        long start = 1565441927257L;
-//        long end = 1565441952829L;
-//        System.out.println(102643 / 25572);
     }
 
     private static void test() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             Station2 s = new Station2();
             Thread t = new Thread(s);
             t.start();
@@ -37,13 +66,16 @@ public class MainClass {
     }
 
     private static void test3() {
-        ExecutorService pool = Executors.newFixedThreadPool(4);
-        System.out.println(System.currentTimeMillis());
-        //pool.execute(new Station2());
+        ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(3,5,0,
+                TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>());
+        //ExecutorService pool = Executors.newFixedThreadPool(4);
 
-        for (int i = 0; i < 4; i++) {
-            pool.execute(new Station2());
+
+
+        for (int i = 0; i < 10; i++) {
+            poolExecutor.execute(new Station2());
         }
+        poolExecutor.shutdown();
     }
 
 

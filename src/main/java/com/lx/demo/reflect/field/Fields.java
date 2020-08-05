@@ -6,7 +6,7 @@ public class Fields {
 
     public static void main(String[] args) throws Exception {
         //1.获取Class对象
-        Class stuClass = Class.forName("com.lx.reflect.field.Student");
+        Class stuClass = Class.forName("com.lx.demo.reflect.field.Student");
         //2.获取字段
         System.out.println("************获取所有公有的字段********************");
         Field[] fieldArray = stuClass.getFields();

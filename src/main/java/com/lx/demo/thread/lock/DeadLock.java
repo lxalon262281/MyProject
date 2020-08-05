@@ -11,26 +11,29 @@ public class DeadLock {
     }
 
     public void startLock() {
-        ThreadA a = new ThreadA(lockA, lockB);
-        ThreadB b = new ThreadB(lockA, lockB);
+        try {
+            ThreadA a = new ThreadA(lockA, lockB);
+            ThreadB b = new ThreadB(lockA, lockB);
 
-        // start threads
-        a.start();
-        b.start();
+            // start threads
+            a.start();
+            b.start();
+            a.join();
+            b.join();
+        } catch (Exception e) {
+            e.getMessage();
+        }
     }
 
 }
 
 class ThreadA extends Thread {
-
     private Object lockA = null;
     private Object lockB = null;
-
     public ThreadA(Object a, Object b) {
         this.lockA = a;
         this.lockB = b;
     }
-
     @Override
     public void run() {
         synchronized (lockA) {
@@ -44,22 +47,16 @@ class ThreadA extends Thread {
                 System.out.println("*** Thread A: ***: Lock B");
             }
         }
-
         System.out.println("*** Thread A: ***: Finished");
     }
-
 }
-
 class ThreadB extends Thread {
-
     private Object lockA = null;
     private Object lockB = null;
-
     public ThreadB(Object a, Object b) {
         this.lockA = a;
         this.lockB = b;
     }
-
     public void run() {
         synchronized (lockB) {
             System.out.println("*** Thread B: ***: Lock B");
@@ -72,8 +69,6 @@ class ThreadB extends Thread {
                 System.out.println("*** Thread B: ***: Lock A");
             }
         }
-
         System.out.println("*** Thread B: ***: Finished");
     }
-
 }

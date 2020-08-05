@@ -1,23 +1,29 @@
 package com.lx.demo.thread;
 
 /**
+ * wait和notify demo
+ */
+
+/**
  *  线程A： 循环50次后等待并放弃锁，让线程B执行。
  */
 class ThreadA extends Thread{
     //线程同步的公共数据区
-    Object oa=null;
+    Object oa = null;
 
     ThreadA(Object o){
-        this.oa=o;
+        this.oa = o;
     }
     //线程A执行逻辑
     public void run(){
         //线程同步区域，需要申请公共数据的锁
         synchronized(oa){
             System.out.println("ThreadA is running......");
-            for(int i=0;i<100;i++){
+
+            for(int i = 0;i < 20;i++){
                 System.out.println("   ThreadA value is "+i);
-                if(i==50){
+
+                if(i == 5){
                     try {
                         //当前线程等待
                         oa.wait();
@@ -35,21 +41,67 @@ class ThreadA extends Thread{
  */
 class ThreadB extends Thread{
     //线程同步的公共数据区
-    Object ob=null;
+    Object ob = null;
 
     ThreadB(Object o){
-        this.ob=o;
+        this.ob = o;
     }
     //线程B执行逻辑
     public void run(){
         //线程同步区域，需要申请公共数据的锁
         synchronized(ob){
             System.out.println("ThreadB is running......");
-            for(int i=0;i<50;i++){
+            for(int i = 0;i < 10;i++){
                 System.out.println("   ThreadB value is "+i);
             }
             //唤醒等待的线程
-            //ob.notify();
+            ob.notify();
+        }
+    }
+}
+
+class ThreadC extends Thread {
+    private Object oc = null;
+
+    public ThreadC(Object o) {
+        this.oc = o;
+    }
+    @Override
+    public void run() {
+        synchronized (oc) {
+            System.out.println("--- ThreadC get lock ---");
+
+            try {
+                for (int i = 0; i < 20; i++) {
+                    System.out.println("ThreadC run " + i);
+
+                    if (i == 10) {
+                        oc.wait();
+                    }
+
+                }
+            } catch (Exception e) {
+                e.getStackTrace();
+            }
+        }
+    }
+
+}
+
+class ThreadD extends Thread {
+    private Object od = null;
+
+    public ThreadD(Object o) {
+        this.od = o;
+    }
+    @Override
+    public void run() {
+        synchronized (od) {
+            System.out.println("--- ThreadD get lock ---");
+            for (int i = 0; i < 10; i++) {
+                System.out.println("ThreadD run " + i);
+            }
+            od.notify();
         }
     }
 }
@@ -57,10 +109,14 @@ class ThreadB extends Thread{
 //测试
 public class ThreadTest {
     public static void main(String[] args){
-        Object lock=new Object(); //公共数据区
-        ThreadA threada=new ThreadA(lock);
-        ThreadB threadb=new ThreadB(lock);
-        threada.start(); //线程A执行
-        threadb.start(); //线程B执行
+        Object lock = new Object(); //公共数据区
+//        ThreadA threada = new ThreadA(lock);
+//        ThreadB threadb = new ThreadB(lock);
+//        threada.start(); //线程A执行
+//        threadb.start(); //线程B执行
+        ThreadC threadC = new ThreadC(lock);
+        ThreadD threadD = new ThreadD(lock);
+        threadC.start();
+        threadD.start();
     }
 }

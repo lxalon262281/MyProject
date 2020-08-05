@@ -1,6 +1,8 @@
 package com.lx.demo.str;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,17 +15,17 @@ public class Solution {
 //        char[] chars = s.toCharArray();
 //        System.out.println((int)chars[0] + " ---" + (int)chars[1]);
 
-        int[] array= {1,3,45,23,3,8,5,1,3,5,8,23,22,9};
-        Map<Integer,Integer> map = new HashMap();
-        for (int i = 0; i < array.length; i++) {
-            int key = array[i];
-            if (map.isEmpty() || map.get(key) == null) {
-                map.put(key,1);
-            } else {
-                map.put(key,map.get(key) + 1);
-            }
-        }
-        System.out.println(map);
+//        int[] array= {1,3,45,23,3,8,5,1,3,5,8,23,22,9};
+//        Map<Integer,Integer> map = new HashMap();
+//        for (int i = 0; i < array.length; i++) {
+//            int key = array[i];
+//            if (map.isEmpty() || map.get(key) == null) {
+//                map.put(key,1);
+//            } else {
+//                map.put(key,map.get(key) + 1);
+//            }
+//        }
+//        System.out.println(map);
     }
 
     public static String findPalindrome(String s, int left, int right) {

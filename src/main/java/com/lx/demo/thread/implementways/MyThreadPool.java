@@ -1,0 +1,8 @@
+package com.lx.demo.thread.implementways;
+
+
+/**
+ * 线程池创建线程方式实现多线程
+ */
+public class MyThreadPool {
+}
